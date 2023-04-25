@@ -1,6 +1,6 @@
 window.OhmniNative = window.OhmniNative || { }
 
-window.Ohmni = new function() {
+window.Ohmni =new function() {
 
   this._events_handler = {};
   this.OhmniCid = 0;
