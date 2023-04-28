@@ -129,14 +129,14 @@ function sendgoal(element) {
     /* lspeed = location_map.get(location)[0];
     rspeed = location_map.get(location)[1]; 
     console.log("going to " + lspeed + ", " + rspeed);*/
-    if (location == "behl") {
+    if (location === "behl") {
         turnleft();
     }
-    if (location == 'bezzo'){
+    if (location === "bezzo"){
         turnright();
     }
 
-    Ohmni.move(200, -200, 8000);
+    Ohmni.move(200, -200, 10000);
 }
 
 
@@ -152,11 +152,11 @@ function returnstart(element) {
     var location = element.value;
     console.log(location);
 
-    Ohmni.move(-200, 200, 8000);
-    if (location == "behl") {
+    Ohmni.move(-200, 200, 10000);
+    if (location === "behl") {
         turnright();
     }
-    if (location == 'bezzo'){
+    if (location === "bezzo"){
         turnleft();
     }
 
