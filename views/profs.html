@@ -101,6 +101,8 @@
             <h2 id="confirmation"></h2>
             <button id="confirmationbutton" class="btn btn-primary"  onclick="sendgoal(document.getElementById('professors'))">
                 Press here to confirm</button>
+            <button id="returnbutton" class="btn btn-primary"  onclick="returnstart(document.getElementById('professors'))">
+                Press here to return to starting position</button>
         </div>        
     </div>
 
@@ -113,9 +115,9 @@
 console.log("Ohmni here:", Ohmni)
 
 const location_map = new Map();
-location_map.set('iqbal', [100,-100]);
-location_map.set('behl', [100,100]);
-location_map.set('bezzo', [-100,100]);
+location_map.set('iqbal', [200,-200]); //goes forwards ~2 inches
+location_map.set('behl', [100,100]); //turns to the right about 45 degrees
+location_map.set('bezzo', [-200,200]); // goes backwards ~2 inches
 
 
 // extracts the value of the selection made by user
@@ -124,12 +126,40 @@ function sendgoal(element) {
     var location = element.value;
     console.log(location);
 
-    lspeed = location_map.get(location)[0];
-    rspeed = location_map.get(location)[1];
-    console.log("going to " + lspeed + ", " + rspeed);
-    Ohmni.move(lspeed, rspeed, 3000);
+    /* lspeed = location_map.get(location)[0];
+    rspeed = location_map.get(location)[1]; 
+    console.log("going to " + lspeed + ", " + rspeed);*/
+    if (location == "behl") {
+        turnleft();
+    }
+    if (location == 'bezzo'){
+        turnright();
+    }
+
+    Ohmni.move(200, -200, 8000);
 }
 
 
+function turnright(){
+    Ohmni.move(100, 100, 3000);
+}
+
+function turnleft(){
+    Ohmni.move(-100, -100, 3000);
+}
+
+function returnstart(element) {
+    var location = element.value;
+    console.log(location);
+
+    Ohmni.move(-200, 200, 8000);
+    if (location == "behl") {
+        turnright();
+    }
+    if (location == 'bezzo'){
+        turnleft();
+    }
+
+}
 
 </script>
