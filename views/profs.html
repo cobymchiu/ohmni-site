@@ -62,16 +62,6 @@
     <div id="content" class="card mx-auto" style="width: 800px;">
         <div id="selection" class="cardbody">
             <h1>Which professor would you like to see?</h1>
-            <!--<div id="professors" class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Make a selection
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href='#' value="iqbal">Professor Iqbal</a></li>
-                    <li><a class="dropdown-item" href='#' value="behl">Professor Behl</a></li>
-                    <li><a class="dropdown-item" href='#' value="bezzo">Professor Bezzo</a></li>
-                </ul>
-            </div>-->
             <select id="professors" name="professors">
                 <option value="iqbal">Professor Iqbal</option>
                 <option value="behl">Professor Behl</option>
@@ -160,13 +150,15 @@ function sendgoal(element) {
         return;
     }
 
+    Ohmni.say("Now directing you to " + location);
+
     var phases = [];
 
     if (location === "behl") {
-        phases.push(turnleft());
+        phases.push(turnleft(true));
     }
     if (location === "bezzo"){
-        phases.push(turnright());
+        phases.push(turnright(true));
     }
 
     phases.push(goforward(10));
@@ -190,16 +182,19 @@ function returnstart(element) {
         return;
     }
 
+    Ohmni.say("Going back to the start!");
+
     var phases = [];
 
+    phases.push(gobackward(10));
+
     if (location === "behl") {
-        phases.push(turnright());
+        phases.push(turnright(true));
     }
     if (location === "bezzo"){
-        phases.push(turnleft());
+        phases.push(turnleft(true));
     }
 
-    phases.push(gobackward(10));
 
     document.getElementById("selection").style.visibility = "visible";
     document.getElementById("confirmdiv").style.visibility = "hidden";
@@ -212,19 +207,31 @@ function returnstart(element) {
 
 }
 
-function turnright(){
+function turnright(is45){
+    //sets the turn to be either 45 degrees or 90 degrees
+    var ms = 6000;
+    if (is45) {
+        ms = 3000;
+    }
+
     return function(cb) {
         console.log("turning right")
-        Ohmni.move(100, 100, 3000);
-        wait(cb, 3500);      
+        Ohmni.move(100, 100, ms);
+        wait(cb, ms+500);      
     }
 }
 
-function turnleft(){
+function turnleft(is45){
+    //sets the turn to be either 45 degrees or 90 degrees
+    var ms = 6000;
+    if (is45) {
+        ms = 3000;
+    }
+
     return function(cb) {
         console.log("turning left");
-        Ohmni.move(-100, -100, 3000);
-        wait(cb, 3500);      
+        Ohmni.move(-100, -100, ms);
+        wait(cb, ms+500);      
     }
 
 }
