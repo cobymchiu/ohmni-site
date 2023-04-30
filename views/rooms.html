@@ -28,7 +28,7 @@
         }
     </script>
     
-   <!-- <script type="text/javascript" src="../ros-functions.js"></script> -->
+   <script type="text/javascript" src="../ros-functions.js"></script>
    <script type="text/javascript" src="../Ohmni-standalone.js"></script>
 
 </head>
@@ -207,55 +207,5 @@ function returnstart(element) {
     document.getElementById("confirmdiv").style.visibility = "hidden";
     document.getElementById("reset").style.visibility = "hidden";
 }
-
-function turnright(deg){
-    //sets the turn to be either 45 degrees or 90 degrees
-    var ms = 6000;
-    if (deg === 45) {
-        ms = 3000;
-    }
-
-    return function(cb) {
-        console.log("turning right")
-        Ohmni.move(100, 100, ms);
-        wait(cb, ms+500);      
-    }
-}
-
-function turnleft(is45){    
-
-    //sets the turn to be either 45 degrees or 90 degrees
-    var ms = 6000;
-    if (deg === 45) {
-        ms = 3000;
-    }
-
-    return function(cb) {
-        console.log("turning left");
-        Ohmni.move(-100, -100, ms);
-        wait(cb, ms+500);      
-    }
-
-}
-
-function goforward(sec) {
-    ms = sec * 1000;
-    return function(cb) {
-        console.log("going forward");
-        Ohmni.move(300, -300, ms);
-        wait(cb, ms+500);      
-    }
-}
-
-function gobackward(sec) {
-    ms = sec * 1000;
-    return function(cb) {
-        console.log("going backward");
-        Ohmni.move(-300, 300, ms);
-        wait(cb, ms+500);      
-    }    
-    
-}
-
 
 </script>

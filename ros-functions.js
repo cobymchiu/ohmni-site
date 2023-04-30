@@ -21,6 +21,7 @@ function wait(cb, time) {
     cb();
   }, time);
 }
+
 function turnright(deg){
     //sets the turn to be either 45 degrees or 90 degrees
     var ms = 6000;
@@ -35,7 +36,8 @@ function turnright(deg){
     }
 }
 
-function turnleft(is45){    
+function turnleft(deg){    
+
     //sets the turn to be either 45 degrees or 90 degrees
     var ms = 6000;
     if (deg === 45) {
@@ -54,7 +56,7 @@ function goforward(sec) {
     ms = sec * 1000;
     return function(cb) {
         console.log("going forward");
-        Ohmni.move(200, -200, ms);
+        Ohmni.move(300, -300, ms);
         wait(cb, ms+500);      
     }
 }
@@ -63,7 +65,7 @@ function gobackward(sec) {
     ms = sec * 1000;
     return function(cb) {
         console.log("going backward");
-        Ohmni.move(-200, 200, ms);
+        Ohmni.move(-300, 300, ms);
         wait(cb, ms+500);      
     }    
     

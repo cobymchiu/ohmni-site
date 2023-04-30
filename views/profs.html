@@ -132,10 +132,10 @@ function sendgoal(element) {
     var phases = [];
 
     if (location === "behl") {
-        phases.push(turnleft(true));
+        phases.push(turnleft(45));
     }
     if (location === "bezzo"){
-        phases.push(turnright(true));
+        phases.push(turnright(45));
     }
 
     phases.push(goforward(10));
@@ -166,10 +166,10 @@ function returnstart(element) {
     phases.push(gobackward(10));
 
     if (location === "behl") {
-        phases.push(turnright(true));
+        phases.push(turnright(45));
     }
     if (location === "bezzo"){
-        phases.push(turnleft(true));
+        phases.push(turnleft(45));
     }
 
 
