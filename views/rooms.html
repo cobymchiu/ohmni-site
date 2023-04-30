@@ -189,7 +189,7 @@ function returnstart(element) {
 
     phases.push(goforward(10));
     phases.push(goforward(5));
-    
+
     //turn the robot around
     phases.push(turnleft(false));
     phases.push(turnleft(false));
@@ -220,10 +220,11 @@ function turnright(deg){
     }
 }
 
-function turnleft(is45){
+function turnleft(is45){    
+
     //sets the turn to be either 45 degrees or 90 degrees
     var ms = 6000;
-    if (is45) {
+    if (deg === 45) {
         ms = 3000;
     }
 
