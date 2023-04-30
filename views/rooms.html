@@ -110,7 +110,7 @@ function sendgoal(element) {
         return;
     }
 
-    //Ohmni.say("Now directing you to " + location);
+    Ohmni.say("Now directing you to " + location);
 
     var phases = [];
 
@@ -143,13 +143,6 @@ function sendgoal(element) {
 }
 
 function returnstart(element) {
-    var location = element.value;
-    console.log(location);
-
-    if(location === currentposition) {
-        console.log("not moving");
-        return;
-    }
 
     Ohmni.say("Going back to the start!");
 
