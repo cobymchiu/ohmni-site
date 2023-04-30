@@ -142,21 +142,26 @@ function sendgoal(element) {
     phases.push(goforward(5));
 
     if (location === "room1") {
+        currentposition = "room1";
         phases.push(turnleft(90));
     }
     if (location === "room2"){
+        currentposition = "room2";
         phases.push(turnright(90));
+    }
+    else {
+        currentposition = "room3";
     }
 
     phases.push(goforward(5));
 
 
+    console.log("length of array: " +phases.length);
+    run_phases(phases,0);
+
     document.getElementById("selection").style.visibility = "hidden";
     document.getElementById("confirmdiv").style.visibility = "hidden";
     document.getElementById("reset").style.visibility = "visible";
-
-    console.log("length of array: " +phases.length);
-    run_phases(phases,0);
 
 
 }
@@ -175,8 +180,8 @@ function returnstart(element) {
     var phases = [];
 
     //turn the robot around
-    phases.push(turnleft(false));
-    phases.push(turnleft(false));
+    phases.push(turnleft(90));
+    phases.push(turnleft(90));
 
     phases.push(goforward(5));
 
@@ -191,19 +196,16 @@ function returnstart(element) {
     phases.push(goforward(5));
 
     //turn the robot around
-    phases.push(turnleft(false));
-    phases.push(turnleft(false));
+    phases.push(turnleft(90));
+    phases.push(turnleft(90));
 
+    console.log("length of array: " +phases.length);
+    run_phases(phases,0);
+    currentposition = "start";
 
     document.getElementById("selection").style.visibility = "visible";
     document.getElementById("confirmdiv").style.visibility = "hidden";
     document.getElementById("reset").style.visibility = "hidden";
-
-    
-    console.log("length of array: " +phases.length);
-    run_phases(phases,0);
-
-
 }
 
 function turnright(deg){
