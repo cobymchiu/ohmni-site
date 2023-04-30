@@ -42,7 +42,7 @@ class stack {
 class Graph {
 
     constructor (numVertices) {
-        this.numVertices = num_vertices;
+        this.numVertices = numVertices;
         this.AdjList = new Map();
     }
 
@@ -77,7 +77,22 @@ class Graph {
 
     //dfs shortest path algorithm
     findPath(startingNode, goalNode) {
-        
+        var visited = {};
+        var path = {};
+
+        this.DFSUtil(startingNode, goalNode, path, visited)
+    }
+
+    DFSUtil(vertex, goal, path, visited){
+        visited[vertex] = true;
+
+        var getNeighbors = this.AdjList.get(vert);
+
+        for(var i in getNeighbors) {
+            if (i === goal) {
+                return path;
+            }
+        }
     }
 }
 
