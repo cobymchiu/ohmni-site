@@ -1,0 +1,238 @@
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../media/engineering.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">    
+
+    <link rel="stylesheet" href="../style.css">
+    <title>LINK Lab</title>
+
+    <style>
+        #content {
+            text-align: center;
+            padding: 0%;
+        }
+
+        #map {
+            height: 800px;
+            width: 700px;
+        }
+
+    </style>
+    
+   <script type="text/javascript" src="../ros-functions.js"></script>
+   <script type="text/javascript" src="../Ohmni-standalone.js"></script>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="../index.html">
+            <img src="../media/engineering.png" alt="Logo" width="24" height="24" class="d-inline-block align-text-top">
+            Lab Navigator
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="../index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="../test_ohmni.html">Test Controls</a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+    </nav>
+    <div class="row">
+        <div id="content" class="col">
+            <img src="../media/lab_overhead_buttons.png" usemap="#labmap" id="map">
+            <map name="labmap">
+                <area shape="rect" coords="200, 350, 300, 430" alt="room1" href="#" onclick="submit('room1')">
+                <area shape="rect" coords="300, 350, 400, 430" alt="room2" href="#" onclick="submit('room2')">
+                <area shape="rect" coords="400, 350, 500, 430" alt="room3" href="#" onclick="submit('room3')">
+                
+                <area shape="rect" coords="200, 450, 300, 530" alt="behl" href="#" onclick="submit('behl')">
+                <area shape="rect" coords="300, 450, 400, 530" alt="iqbal" href="#" onclick="submit('iqbal')">
+                <area shape="rect" coords="400, 450, 500, 530" alt="bezzo" href="#" onclick="submit('bezzo')">
+            </map>
+        </div>  
+        
+        <div class="col" style="text-align: center;">
+            <h1>Map Selection</h1>
+            <h4>Select a location on the map to the left</h4>
+            <p>Current selection is: </p>
+            <p id="current"><b></b></p>
+
+            <div id="confirmdiv" style="visibility: hidden"> 
+
+                <h2 id="confirmation"></h2>
+                <button id="confirmationbutton" class="btn btn-primary"  onclick="sendgoal(document.getElementById('current'))">
+                    Press here to confirm</button>
+                
+            </div>   
+            
+            <div id="reset" style="visibility: hidden">
+                <button id="returnbutton" class="btn btn-primary"  onclick="returnstart(document.getElementById('current'))">
+                    Press here to return to starting position</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+</body>
+
+<script>
+    
+console.log("Ohmni here:", Ohmni)
+
+const location_map = new Map();
+location_map.set('iqbal', ['Professor Iqbal', "prof"]); 
+location_map.set('behl', ['Professor Behl', "prof"]); 
+location_map.set('bezzo', ['Professor Bezzo', "prof"]); 
+
+location_map.set('room1', ['Room 1', "room"]); 
+location_map.set('room2', ['Room 2', "room"]); 
+location_map.set('room3', ['Room 3', "room"]); 
+
+var currentposition = "start";
+
+
+function submit(choice) {
+    var location = location_map.get(choice)[0];
+    console.log("selected " + location);
+    document.getElementById("current").innerHTML = location;
+    var x = document.getElementById("confirmdiv");
+    x.style.visibility = "visible";
+}
+
+// extracts the value of the selection made by user
+// sends corresponding move goal
+function sendgoal(element) {
+    var str = element.innerHTML;
+    console.log(str);
+
+    var location = getByValue(location_map, str);
+    var type = location_map.get(location)[1];
+    console.log(location + ": " + type);
+
+    if(location === currentposition) {
+        console.log("not moving");
+        return;
+    }
+
+    Ohmni.say("Now directing you to " + location);
+
+    var phases = [];
+
+    if (type === "room") {
+
+        phases.push(goforward(10));
+        phases.push(goforward(5));
+
+        if (location === "room1") {
+            currentposition = "room1";
+            phases.push(turnleft(90));
+        }
+        if (location === "room2"){
+            currentposition = "room2";
+            phases.push(turnright(90));
+        }
+        else {
+            currentposition = "room3";
+        }
+
+        phases.push(goforward(5));
+
+    } else {
+
+        if (location === "behl") {
+            phases.push(turnleft(45));
+            currentposition = "behl";
+        }
+        if (location === "bezzo"){
+            phases.push(turnright(45));
+            currentposition = "bezzo";
+        } else {
+            currentposition = "iqbal";
+        }
+
+        phases.push(goforward(10));
+
+    }
+
+    console.log("length of array: " +phases.length);
+    run_phases(phases,0);
+
+    document.getElementById("confirmdiv").style.visibility = "hidden";
+    document.getElementById("reset").style.visibility = "visible";
+
+}
+
+function returnstart(element) {
+    var str = element.innerHTML;
+    console.log(str);
+
+    var location = getByValue(location_map, str);
+    var type = location_map.get(location)[1];
+    console.log(location + ": " + type);
+
+    Ohmni.say("Going back to the start!");
+
+    var phases = [];
+
+    if(type === "room") {
+        //turn the robot around
+        phases.push(turnleft(90));
+        phases.push(turnleft(90));
+
+        phases.push(goforward(5));
+
+        if (location === "room1") {
+            phases.push(turnright(90));
+        }
+        if (location === "room2"){
+            phases.push(turnleft(90));
+        }
+
+        phases.push(goforward(10));
+        phases.push(goforward(5));
+
+        //turn the robot around
+        phases.push(turnleft(90));
+        phases.push(turnleft(90));
+    } else {
+        phases.push(gobackward(10));
+
+        if (location === "behl") {
+            phases.push(turnright(45));
+        }
+        if (location === "bezzo"){
+            phases.push(turnleft(45));
+        }
+    }
+
+    console.log("length of array: " +phases.length);
+    run_phases(phases,0);
+    currentposition = "start";
+
+    document.getElementById("confirmdiv").style.visibility = "hidden";
+    document.getElementById("reset").style.visibility = "hidden";
+}
+
+function getByValue(map, searchValue) {
+  for (let [key, value] of map.entries()) {
+    if (value[0] === searchValue)
+      return key;
+  }
+}
+
+</script>
